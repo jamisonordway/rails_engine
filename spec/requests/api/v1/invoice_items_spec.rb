@@ -17,19 +17,19 @@ describe "Invoice Items Record" do
 
         invoice_item = JSON.parse(response.body)
         expect(response).to be_successful
-        expect(item["id"]).to eq(id)
+        expect(invoice_item["id"]).to eq(id)
     end
     it "can create a new invoice item" do
         id = create(:invoice_item).id
         invoice_item_params = { item_id: 1, invoice_id: 1, quantity: 1, unit_price: 1000 }
 
-        post "api/v1/invoice_items", params: {invoice_item: invoice_item_params}
+        post "/api/v1/invoice_items", params: {invoice_item: invoice_item_params}
         invoice_item = InvoiceItem.last
-
+        
         assert_response :success
         expect(response).to be_successful
         
-        expect(invoice_item).unit_price to.eq(unit_price)
+        expect(invoice_item.unit_price).to eq(invoice_item_params[:unit_price])
     end
     it "can update an existing invoice item" do
         id = create(:invoice_item).id 
@@ -37,7 +37,7 @@ describe "Invoice Items Record" do
         invoice_item_params = { unit_price: 1100 }
 
         put "/api/v1/invoice_items/#{id}", params: { invoice_item: invoice_item_params }
-        invoice_item_params = InvoiceItem.find_by(id: id)
+        invoice_item = InvoiceItem.find_by(id: id)
 
         expect(response).to be_successful
         expect(invoice_item.unit_price).to_not eq(previous_price)
@@ -51,7 +51,7 @@ describe "Invoice Items Record" do
         delete "/api/v1/invoice_items/#{invoice_item.id}"
 
         expect(response).to be_successful
-        expect(Item.count).to eq(0)
-        expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect(InvoiceItem.count).to eq(0)
+        expect{InvoiceItem.find(invoice_item.id)}.to raise_error(ActiveRecord::RecordNotFound)
      end
 end 
