@@ -97,7 +97,7 @@ describe 'transactions API' do
     expect(transactions.count).to eq(2)
   end
 
-  it 'can search all matching result' do
+  it 'can search all matching results' do
     transaction = create_list(:transaction, 3).first
 
     get "/api/v1/transactions/find_all?result=#{transaction.result}"
@@ -119,7 +119,7 @@ describe 'transactions API' do
     expect(response).to be_successful
   end
 
-  xit 'can search by created_at date' do
+  it 'can search by created_at date' do
     transactions = create(:transaction,
                             created_at: "2012-03-27 14:53:59 UTC",
                             updated_at: "2012-03-27 14:53:59 UTC")
@@ -130,11 +130,11 @@ describe 'transactions API' do
 
     expect(response).to be_successful
     expect(transaction["id"]).to eq(transactions.id)
-    expect(transaction["name"]).to eq(transactions.name)
-    # expect(transaction["created_at"]).to eq(transactions.created_at)
+    expect(transaction["result"]).to eq(transactions.result)
+    expect(transaction["credit_card_number"]).to eq(transactions.credit_card_number)
   end
 
-  xit 'can search by updated_at' do
+  it 'can search by updated_at' do
     transactions = create(:transaction,
                             created_at: "2012-03-27 14:53:59 UTC",
                             updated_at: "2012-03-27 14:53:59 UTC")
@@ -145,7 +145,7 @@ describe 'transactions API' do
 
     expect(response).to be_successful
     expect(transaction["id"]).to eq(transactions.id)
-    expect(transaction["name"]).to eq(transactions.name)
-    # expect(transaction["updated_at"]).to eq(transactions.updated_at)
+    expect(transaction["result"]).to eq(transactions.result)
+    expect(transaction["credit_card_number"]).to eq(transactions.credit_card_number)
   end
 end
