@@ -164,8 +164,7 @@ describe "Items Record Endpoints" do
     
         item = JSON.parse(response.body)
     
-        expect(response).to be_success
-    
+        expect(response).to be_successful
       end
         it "can create a new item" do
         id = create(:item).id

@@ -131,6 +131,15 @@ describe "Invoices Record" do
         expect(response).to be_successful
         expect(invoices.count).to eq(3)
     end 
+    it 'can return a random invoice' do
+        invoices = create_list(:invoice, 5)
+    
+        get '/api/v1/invoices/random'
+    
+        invoice = JSON.parse(response.body)
+    
+        expect(response).to be_successful
+      end
     it "can create a new invoice" do
         id = create(:invoice).id
         invoice_params = { customer_id: 1, merchant_id: 1, status: "paid"}
