@@ -108,6 +108,31 @@ describe "Items Record Endpoints" do
         expect(items.first["merchant_id"]).to eq(item.merchant_id)
         expect(items.count).to eq(1)
       end
+      it 'can return single item by passing created_at param' do
+        create(:item)
+        id = Item.last.id
+        created_at = Item.last.created_at
+    
+        get "/api/v1/items/find?created_at=#{created_at}"
+    
+        item = JSON.parse(response.body)
+    
+        expect(response).to be_success
+        expect(item["id"]).to eq(id)
+      end
+    
+      it 'can return single item by passing updated_at param' do
+        create(:item)
+        id = Item.last.id
+        updated_at = Item.last.updated_at
+    
+        get "/api/v1/items/find?updated_at=#{updated_at}"
+    
+        item = JSON.parse(response.body)
+    
+        expect(response).to be_success
+        expect(item["id"]).to eq(id)
+      end
       it 'can return a random item' do
         items = create_list(:item, 5)
     
