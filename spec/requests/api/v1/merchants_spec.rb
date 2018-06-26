@@ -106,7 +106,6 @@ describe 'merchants API' do
     expect(response).to be_successful
     expect(merchant["id"]).to eq(merchants.id)
     expect(merchant["name"]).to eq(merchants.name)
-    # expect(merchant["created_at"]).to eq(merchants.created_at)
   end
 
   it 'can search by updated_at' do
@@ -121,6 +120,5 @@ describe 'merchants API' do
     expect(response).to be_successful
     expect(merchant["id"]).to eq(merchants.id)
     expect(merchant["name"]).to eq(merchants.name)
-    # expect(merchant["updated_at"]).to eq(merchants.updated_at)
   end
 end
