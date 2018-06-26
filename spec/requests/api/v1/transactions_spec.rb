@@ -60,32 +60,56 @@ describe 'transactions API' do
     expect{Transaction.find(transaction.id)}.to raise_error(ActiveRecord::RecordNotFound)
   end
 
-  xit 'can search by name' do
-    name = create_list(:transaction, 3).first.name
+  it 'can search by the id' do
+    id = create(:transaction).id
 
-    get "/api/v1/transactions/find?name=#{name}"
+    get "/api/v1/transactions/find?id=#{id}"
 
     expect(response).to be_successful
 
     transaction = JSON.parse(response.body)
 
-    expect(Transaction.count).to eq(3)
-    expect(transaction["name"]).to eq(name)
+    expect(Transaction.count).to eq(1)
+    expect(transaction["id"]).to eq(id)
   end
 
-  xit 'can search all matching names' do
-    transaction = create_list(:transaction, 3).first
+  it 'can search by invoice_id' do
+    invoice = create(:transaction).invoice_id
 
-    get "/api/v1/transactions/find_all?name=#{transaction.name}"
+    get "/api/v1/transactions/find_all?invoice_id=#{invoice}"
 
     transactions = JSON.parse(response.body)
     expect(response).to be_successful
 
-    expect(transaction["name"]).to eq(transaction.name)
+    expect(transactions.first["invoice_id"]).to eq(invoice)
+    expect(transactions.count).to eq(1)
+  end
+
+  it 'can search by credit_card_number' do
+    cc_number = create_list(:transaction, 2).first.credit_card_number
+
+    get "/api/v1/transactions/find_all?credit_card_number=#{cc_number}"
+
+    transactions = JSON.parse(response.body)
+    expect(response).to be_successful
+
+    expect(transactions.first["credit_card_number"]).to eq(cc_number)
+    expect(transactions.count).to eq(2)
+  end
+
+  it 'can search all matching result' do
+    transaction = create_list(:transaction, 3).first
+
+    get "/api/v1/transactions/find_all?result=#{transaction.result}"
+
+    transactions = JSON.parse(response.body)
+    expect(response).to be_successful
+
+    expect(transaction["result"]).to eq(transaction.result)
     expect(transactions.count).to eq(3)
   end
 
-  xit 'can search a random transaction' do
+  it 'can search a random transaction' do
     transactions = create_list(:transaction, 5)
 
     get '/api/v1/transactions/random'
