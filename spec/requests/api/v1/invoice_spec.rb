@@ -59,7 +59,7 @@ describe "Invoices Record" do
         get "/api/v1/invoices/find?created_at=#{created_at}"
     
         invoice = JSON.parse(response.body)
-        #binding.pry
+   
         expect(invoice["id"]).to eq(id)
     end 
     it "can find first invoice by updated at" do
