@@ -108,7 +108,7 @@ describe "Items Record Endpoints" do
         expect(items.first["merchant_id"]).to eq(item.merchant_id)
         expect(items.count).to eq(1)
       end
-      it 'can return single item by passing created_at param' do
+      it "can return single item by created_at param" do
         create(:item)
         id = Item.last.id
         created_at = Item.last.created_at
@@ -121,7 +121,7 @@ describe "Items Record Endpoints" do
         expect(item["id"]).to eq(id)
       end
     
-      it 'can return single item by passing updated_at param' do
+      it "can return single item by updated_at param" do
         create(:item)
         id = Item.last.id
         updated_at = Item.last.updated_at
@@ -133,6 +133,30 @@ describe "Items Record Endpoints" do
         expect(response).to be_success
         expect(item["id"]).to eq(id)
       end
+      it "can return all items by created at param" do
+        create(:item)
+        create_list(:item, 3, created_at: "2018-04-31 12:12:12 UTC")
+        created_at = Item.last.created_at
+    
+        get "/api/v1/items/find_all?created_at=#{created_at}"
+    
+        items = JSON.parse(response.body)
+    
+        expect(response).to be_success
+        expect(items.count).to eq(3)
+      end 
+      it "can return all items by updated at param" do
+        create(:item)
+        create_list(:item, 3, updated_at: "2018-04-31 11:11:11 UTC")
+        updated_at = Item.last.updated_at
+    
+        get "/api/v1/items/find_all?updated_at=#{updated_at}"
+    
+        items = JSON.parse(response.body)
+    
+        expect(response).to be_success
+        expect(items.count).to eq(3)
+      end 
       it 'can return a random item' do
         items = create_list(:item, 5)
     
