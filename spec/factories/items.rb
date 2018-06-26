@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :item do
-    name "MyString"
-    description "MyText"
+    name "Cool Item"
+    description "Best description ever"
     unit_price 1
-    merchant nil
+    merchant 
   end
 end
