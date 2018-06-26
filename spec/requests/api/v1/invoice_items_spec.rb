@@ -93,24 +93,67 @@ describe "Invoice Items Record" do
 
         expect(response).to be_successful
 
-        invoice_item = JSON.parse(response.body)
+        invoice_items = JSON.parse(response.body)
         
-        expect(invoice_item["item_id"]).to eq(item_id)
+        expect(invoice_items.first["item_id"]).to eq(item_id)
     end 
     it "can find all invoice items by invoice id" do
+        invoice_id = create_list(:invoice_item, 3).first.invoice_id
 
+        get "api/v1/invoice_items/find_all?invoice_id=#{invoice_id}"
+
+        expect(response).to be_successful
+
+        invoice_items = JSON.parse(response.body)
+
+        expect(invoice_items.count).to eq(3)
     end 
     it "can find all invoice items by quantity" do
+        create(:invoice_item, 3, quantity: 2)
+        quantity = InvoiceItem.last.quantity
 
+        get "/api/v1/invoice_items/find_all?quantity=#{quantity}"
+
+        invoice_items = JSON.parse(response.body)
+
+        expect(response).to be_successful
+
+        expect(invoice_items.first["quantity"]).to eq(quantity)
+        expect(invoice_items.count).to eq(3)
     end 
     it "can find all invoice items by created_at" do
+        create(:invoice_item)
+        create_list(:invoice_item, 3,  "2018-04-31 12:12:12 UTC")
+        created_at = InvoiceItem.last.created_at
 
+        get "/api/v1/invoices/find_all?created_at=#{created_at}"
+
+        invoice_items = JSON.parse(response.body)
+        
+        expect(response).to be_successful
+        expect(invoice_items.count).to eq(3)
     end 
     it "can find all invoice items by updated_at" do
+        create(:invoice_item)
+        create_list(:invoice_item, 3, updated_at:  "2018-05-31 12:12:12 UTC")
+        updated_at = InvoiceItem.last.updated_at
 
+        invoice_items = JSON.parse(response.body)
+
+        expect(response).to be_successful
+        expect(invoice_items.count).to eq(3)
     end 
     it "can find all invoice items by unit_price" do
+        create(:invoice_item)
+        create_list(:invoice_item, 3, unit_price: 1000)
+        unit_price = InvoiceItem.last.unit_price
 
+        get "/api/v1/invoice/find_all?unit_price=#{unit_price}"
+
+        invoice_items = JSON.parse(response.body)
+
+        expect(response).to be_successful
+        expect(invoice_items.count).to eq(3)
     end 
     it "can create a new invoice item" do
         id = create(:invoice_item).id
