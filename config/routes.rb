@@ -19,8 +19,15 @@ Rails.application.routes.draw do
         get '/random', to: 'random#show'
       end
 
+      namespace :customers do
+        get '/find', to: 'search#show'
+        get '/find_all', to: 'search#index'
+        get '/random', to: 'random#show'
+      end
+
       resources :merchants, except: [:new, :edit]
       resources :transactions, except: [:new, :edit]
+      resources :customers, except: [:new, :edit]
       resources :invoices, except: [:new, :edit]
       resources :items, except: [:new, :edit]
       resources :invoice_items, except: [:new, :edit]
