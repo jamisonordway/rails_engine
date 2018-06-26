@@ -19,6 +19,36 @@ describe "Invoices Record" do
         expect(response).to be_successful
         expect(invoice["id"]).to eq(id)
     end 
+    it "can find first invoice by customer id" do
+
+    end 
+    it "can find first invoice by merchant id " do
+
+    end 
+    it "can find first invoice by status" do 
+
+    end 
+    it "can find first invoice by created at" do
+
+    end 
+    it "can find first invoice by updated at" do
+
+    end 
+    it "can find all invoices by customer id " do
+
+    end 
+    it "can find all invoices by merchant id" do
+
+    end 
+    it "can find all invoices by status" do
+
+    end 
+    it "can find all invoices by created at" do
+
+    end 
+    it "can find all invoices by updated at" do
+        
+    end 
     it "can create a new invoice" do
         id = create(:invoice).id
         invoice_params = { customer_id: 1, merchant_id: 1, status: "paid"}
