@@ -58,4 +58,67 @@ describe 'merchants API' do
     expect(Merchant.count).to eq(0)
     expect{Merchant.find(merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
   end
+
+  it 'can search by name' do
+    name = create_list(:merchant, 3).first.name
+
+    get "/api/v1/merchants/find?name=#{name}"
+
+    expect(response).to be_successful
+
+    merchant = JSON.parse(response.body)
+
+    expect(Merchant.count).to eq(3)
+    expect(merchant["name"]).to eq(name)
+  end
+
+  it 'can search all matching names' do
+    merchant = create_list(:merchant, 3).first
+
+    get "/api/v1/merchants/find_all?name=#{merchant.name}"
+
+    merchants = JSON.parse(response.body)
+    expect(response).to be_successful
+
+    expect(merchant["name"]).to eq(merchant.name)
+    expect(merchants.count).to eq(3)
+  end
+
+  it 'can search a random merchant' do
+    merchants = create_list(:merchant, 5)
+
+    get '/api/v1/merchants/random'
+
+    merchant = JSON.parse(response.body)
+
+    expect(response).to be_successful
+  end
+
+  it 'can search by created_at date' do
+    merchants = create(:merchant,
+                            created_at: "2012-03-27 14:53:59 UTC",
+                            updated_at: "2012-03-27 14:53:59 UTC")
+
+    get "/api/v1/merchants/find?created_at=#{merchants.created_at}"
+
+    merchant = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(merchant["id"]).to eq(merchants.id)
+    expect(merchant["name"]).to eq(merchants.name)
+  end
+
+  it 'can search by updated_at' do
+    merchants = create(:merchant,
+                            created_at: "2012-03-27 14:53:59 UTC",
+                            updated_at: "2012-03-27 14:53:59 UTC")
+
+    get "/api/v1/merchants/find?created_at=#{merchants.created_at}"
+
+    merchant = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(merchant["id"]).to eq(merchants.id)
+    expect(merchant["name"]).to eq(merchants.name)
+  end
 end
