@@ -33,7 +33,7 @@ describe "Items Record" do
     end 
     it "can update an existing item" do
         id = create(:item).id
-        previous_status = item.last.name
+        previous_name = Item.last.name
         item_params = { name: "Okay Item" }
 
         put "/api/v1/items/#{id}", params: {item: item_params}
@@ -46,12 +46,12 @@ describe "Items Record" do
     it "can destroy an item" do
         item = create(:item)
 
-        expect(item.count).to eq(1)
+        expect(Item.count).to eq(1)
         
         delete "/api/v1/items/#{item.id}"
 
         expect(response).to be_successful
-        expect(item.count).to eq(0)
-        expect{item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect(Item.count).to eq(0)
+        expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
     end 
 end 
