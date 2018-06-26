@@ -117,7 +117,7 @@ describe "Items Record Endpoints" do
     
         item = JSON.parse(response.body)
     
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(item["id"]).to eq(id)
       end
     
@@ -130,7 +130,7 @@ describe "Items Record Endpoints" do
     
         item = JSON.parse(response.body)
     
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(item["id"]).to eq(id)
       end
       it "can return all items by created at param" do
@@ -142,7 +142,7 @@ describe "Items Record Endpoints" do
     
         items = JSON.parse(response.body)
     
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(items.count).to eq(3)
       end 
       it "can return all items by updated at param" do
@@ -154,7 +154,7 @@ describe "Items Record Endpoints" do
     
         items = JSON.parse(response.body)
     
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(items.count).to eq(3)
       end 
       it 'can return a random item' do
@@ -164,8 +164,7 @@ describe "Items Record Endpoints" do
     
         item = JSON.parse(response.body)
     
-        expect(response).to be_success
-    
+        expect(response).to be_successful
       end
         it "can create a new item" do
         id = create(:item).id

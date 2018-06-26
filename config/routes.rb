@@ -5,7 +5,13 @@ Rails.application.routes.draw do
         get '/find', to: 'search#show'
         get '/find_all', to: 'search#index'
         get '/random', to: 'random#show'
-      end
+      end 
+      
+      namespace :invoices do
+        get '/find', to: 'search#show'
+        get '/find_all', to: 'search#index'
+        get '/random', to: 'random#show'
+      end 
 
       namespace :merchants do
         get '/find', to: 'search#show'
