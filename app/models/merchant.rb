@@ -1,8 +1,9 @@
 class Merchant < ApplicationRecord
   has_many :items
   has_many :invoices
+  has_many :customers
   has_many :invoice_items, through: :invoices
-  has_many :invoice_items, through: :invoices
+  has_many :customers, through: :invoices
   has_many :transactions, through: :invoices
 
   def revenue
@@ -27,6 +28,9 @@ class Merchant < ApplicationRecord
     # .order("total DESC")
     # .group("merchants.id")
     # .take(quantity)
-    # Item.group(:merchant_id).order('count_all DESC').count.take(2)
+  end
+
+  def self.most_revenue(thing)
+
   end
 end
