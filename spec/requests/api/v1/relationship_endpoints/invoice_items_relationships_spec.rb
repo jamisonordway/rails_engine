@@ -21,7 +21,7 @@ describe 'Invoice items API' do
 
             get "/api/v1/invoice_items/#{invoice_item.id}/item"
 
-            item = JSON.parse(respone.body)
+            item = JSON.parse(response.body)
 
             expect(response).to be_successful
             expect(item["id"]).to eq(invoice_item.item.id)
