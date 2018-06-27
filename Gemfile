@@ -37,6 +37,8 @@ group :development, :test do
   gem 'pry'
   gem 'factory_bot_rails'
   gem 'database_cleaner'
+  gem 'faker'
+  gem 'active_model_serializers', '~> 0.10.0'
 end
 
 group :development do

@@ -1,4 +1,4 @@
-0.times do
+10.times do
   Merchant.create!(
     name: Faker::RickAndMorty.character
   )
