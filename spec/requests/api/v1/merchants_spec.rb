@@ -141,5 +141,7 @@ describe 'merchants API' do
       expect(response).to be_successful
       expect(items.count).to eq(5)
     end
+    it "can return all invoices associated with a merchant" do
+      
   end 
 end 
