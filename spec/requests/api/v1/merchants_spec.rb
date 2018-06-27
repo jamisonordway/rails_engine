@@ -122,3 +122,39 @@ describe 'merchants API' do
     expect(merchant["name"]).to eq(merchants.name)
   end
 end
+describe 'merchants API' do
+  describe 'relationships' do
+    it "can return all items associated with a merchant" do
+      create(:merchant)
+      id = Merchant.last.id
+      id_2 = 2
+
+      create(:merchant, id: id_2)
+      create_list(:item, 5, merchant_id: id)
+      create_list(:item, 9, merchant_id: id_2)
+      
+      get "/api/v1/merchants/#{id}/items"
+
+      items = JSON.parse(response.body)
+      
+      expect(response).to be_successful
+      expect(items.count).to eq(5)
+    end
+    it "can return all invoices associated with a merchant" do
+      create(:merchant)
+      id = Merchant.last.id
+      id_2 = 2
+
+      create(:merchant, id: id_2)
+      create_list(:invoice, 4, merchant_id: id)
+      create_list(:invoice, 8, merchant_id: id_2)
+
+      
+      get "/api/v1/merchants/#{id}/invoices"
+      invoices = JSON.parse(response.body)
+
+      expect(response).to be_successful
+      expect(invoices.count).to eq(4)
+    end
+  end 
+end 
