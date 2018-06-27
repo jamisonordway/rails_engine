@@ -22,7 +22,6 @@ class Merchant < ApplicationRecord
     .group(:id)
     .limit(quantity)
     # select("merchants.*, sum(invoice_items.quantity) AS total")
-    # binding.pry
     # .joins(:invoices [:invoice_items, :transactions])
     # .merge(Transaction.successful)
     # .order("total DESC")
