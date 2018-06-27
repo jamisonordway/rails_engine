@@ -22,7 +22,6 @@ describe 'merchant with most items sold' do
 
     expect(response).to be_successful
     merchants = JSON.parse(response.body)
-
-    expect(merchants.first.id).to eq(merchant_2.id)
+    expect(merchants.first["id"]).to eq(merchant_2.id)
   end
 end
