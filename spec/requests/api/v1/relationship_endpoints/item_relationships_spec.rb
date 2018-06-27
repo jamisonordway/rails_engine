@@ -1,6 +1,6 @@
 describe 'items API' do
     describe 'relationships' do
-      it "can return all items associated with a item" do
+      xit "can return all items associated with a item" do
         create(:item)
         id = Item.last.id
         id_2 = 2
@@ -16,7 +16,7 @@ describe 'items API' do
         expect(response).to be_successful
         expect(items.count).to eq(5)
       end
-      it "can return all invoices associated with a item" do
+      xit "can return all invoices associated with a item" do
         create(:item)
         id = Item.last.id
         id_2 = 2
@@ -31,5 +31,6 @@ describe 'items API' do
   
         expect(response).to be_successful
         expect(invoices.count).to eq(4)
+        end 
       end
     end 

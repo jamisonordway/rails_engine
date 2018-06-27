@@ -17,7 +17,7 @@ describe 'invoices API' do
       it "can return all invoice_items associated with an invoice" do
         invoices = create_list(:invoice, 7)
         100.times do 
-            create(:invoice_item, invoice: invoice_list.sample)
+            create(:invoice_item, invoice: invoices.sample)
         end
         
         get "/api/v1/invoices/#{invoices[3].id}/invoice_items"
@@ -57,14 +57,15 @@ describe 'invoices API' do
       it "can return the merchant associated with an invoice" do
         merchants = create_list(:merchant, 5)
         8.times do
-            create(:invoice, merchant: merchant_list.sample)
+            create(:invoice, merchant: merchants.sample)
         end
 
-        get "api/v1/invoices/#{Invoice.first.id}/merchant"
+        get "/api/v1/invoices/#{Invoice.first.id}/merchant"
 
         merchant = JSON.parse(response.body)
 
         expect(response).to be_successful
         expect(Invoice.first.merchant.id).to eq(merchant["id"])
+         end 
       end 
     end 
