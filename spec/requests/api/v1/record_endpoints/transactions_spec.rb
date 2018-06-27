@@ -109,6 +109,17 @@ describe 'transactions API' do
     expect(transactions.count).to eq(3)
   end
 
+  it "can search all matching case insensitive results" do
+    transaction = create_list(:transaction, 3).first
+
+    get "/api/v1/transactions/find_all?result=#{transaction.result.upcase}"
+
+    transactions = JSON.parse(response.body)
+    expect(response).to be_successful
+
+    expect(transaction["result"]).to eq(transaction.result)
+    expect(transactions.count).to eq(3)
+  end 
   it 'can search a random transaction' do
     transactions = create_list(:transaction, 5)
 

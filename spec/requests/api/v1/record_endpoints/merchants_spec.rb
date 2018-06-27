@@ -72,6 +72,18 @@ describe 'merchants API' do
     expect(merchant["name"]).to eq(name)
   end
 
+  it 'can search by case insensitive name' do
+    name = create(:merchant, name: 'bob ross store').name
+
+    get "/api/v1/merchants/find?name=#{name.upcase}"
+
+    expect(response).to be_successful
+
+    merchant = JSON.parse(response.body)
+    expect(Merchant.count).to eq(1)
+    expect(merchant["name"]).to eq(name)
+  end 
+
   it 'can search all matching names' do
     merchant = create_list(:merchant, 3).first
 
@@ -83,6 +95,18 @@ describe 'merchants API' do
     expect(merchant["name"]).to eq(merchant.name)
     expect(merchants.count).to eq(3)
   end
+
+  it "can search all case insenstive matching names" do
+    merchant = create_list(:merchant, 3).first
+    
+    get "/api/v1/merchants/find_all?name=#{merchant.name.upcase}"
+
+    merchants = JSON.parse(response.body)
+    expect(response).to be_successful
+
+    expect(merchant["name"]).to eq(merchant.name)
+    expect(merchants.count).to eq(3)
+  end 
 
   it 'can search a random merchant' do
     merchants = create_list(:merchant, 5)
