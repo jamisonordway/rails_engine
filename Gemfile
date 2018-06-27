@@ -35,6 +35,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'pry'
   gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'active_model_serializers', '~> 0.10.0'
 end
 
 group :development do
