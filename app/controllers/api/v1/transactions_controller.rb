@@ -8,7 +8,7 @@ class Api::V1::TransactionsController < ApplicationController
   end
 
   def create
-    render json: Transaction.create(transaction_params)
+    render json: Transaction.create!(transaction_params)
   end
 
   def update
@@ -22,6 +22,6 @@ class Api::V1::TransactionsController < ApplicationController
   private
 
   def transaction_params
-    params.require(:transaction).permit(:credit_card_number, :result)
+    params.require(:transaction).permit(:credit_card_number, :result, :invoice_id)
   end
 end
