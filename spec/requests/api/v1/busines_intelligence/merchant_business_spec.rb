@@ -1,6 +1,24 @@
 require 'rails_helper'
 
 describe 'merchant business analytics' do
+
+  it 'returns the total revenue for that merchant across successful transactions' do
+    merchant = create(:merchant)
+    invoice_list = create_list(:invoice, 3, merchant: merchant)
+    create(:transaction, invoice: invoice_list[0], result: "Success")
+    create(:transaction, invoice: invoice_list[1], result: "Success")
+    create(:transaction, invoice: invoice_list[2], result: "Failed")
+    create(:invoice_item, invoice: invoice_list[0], unit_price: 100, quantity: 100)
+    create(:invoice_item, invoice: invoice_list[1], unit_price: 100, quantity: 100)
+    create(:invoice_item, invoice: invoice_list[2], unit_price: 1234, quantity: 1345)
+
+    get "/api/v1/merchants/#{merchant.id}/revenue"
+
+    expect(response).to be_success
+    revenue = JSON.parse([response.body].to_json).first
+    binding.pry
+    expect(revenue).to eq(2000)
+  end
   it 'should return merchant with most items' do
     merchant_1 = create(:merchant)
     merchant_2 = create(:merchant)
