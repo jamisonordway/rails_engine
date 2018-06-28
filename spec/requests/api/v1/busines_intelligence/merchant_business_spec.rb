@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'merchant with most items sold' do
+describe 'merchant business analytics' do
   it 'should return merchant with most items' do
     merchant_1 = create(:merchant)
     merchant_2 = create(:merchant)
