@@ -53,10 +53,10 @@ describe "Items Record Endpoints" do
         expect(item["description"]).to eq(description)
     end 
     it "can find first instance by unit price" do
-        item = create_list(:item, 3).first
+        item = create(:item, unit_price: 1)
 
         get "/api/v1/items/find?unit_price=#{item.unit_price}"
-
+        
         expect(response).to be_successful
 
         result = JSON.parse(response.body)
@@ -155,8 +155,7 @@ describe "Items Record Endpoints" do
         expect(item["id"]).to eq(id)
       end
       it "can return all items by created at param" do
-        create(:item)
-        create_list(:item, 3, created_at: "2018-04-31 12:12:12 UTC")
+        create_list(:item, 3, created_at: "2018-04-31 11:11:11 UTC")
         created_at = Item.last.created_at
     
         get "/api/v1/items/find_all?created_at=#{created_at}"
@@ -167,12 +166,12 @@ describe "Items Record Endpoints" do
         expect(items.count).to eq(3)
       end 
       it "can return all items by updated at param" do
-        create(:item)
+        #create(:item)
         create_list(:item, 3, updated_at: "2018-04-31 11:11:11 UTC")
         updated_at = Item.last.updated_at
-    
+        
         get "/api/v1/items/find_all?updated_at=#{updated_at}"
-    
+          
         items = JSON.parse(response.body)
     
         expect(response).to be_successful
@@ -180,7 +179,7 @@ describe "Items Record Endpoints" do
       end 
       it 'can return a random item' do
         items = create_list(:item, 5)
-    
+        
         get '/api/v1/items/random'
     
         item = JSON.parse(response.body)

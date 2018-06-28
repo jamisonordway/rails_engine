@@ -1,7 +1,7 @@
 class Api::V1::Items::RandomController < ApplicationController
 
     def show
-        id = rand(Item.first.id..Item.last.id)
+        id = Item.all.sample.id
         render json: Item.find(id)
     end 
 
