@@ -39,12 +39,15 @@ describe 'merchant with most items sold' do
     create(:transaction, invoice: invoice_2, result: "success")
     create(:transaction, invoice: invoice_3, result: "failed")
 
-    create(:invoice_item, invoice: invoice_1, unit_price: 100, quantity: 100)
-    create(:invoice_item, invoice: invoice_2, unit_price: 10, quantity: 100)
-    create(:invoice_item, invoice: invoice_3, unit_price: 1, quantity: 2000)
+    create(:invoice_item, invoice: invoice_1, unit_price: 1, quantity: 100)
+    create(:invoice_item, invoice: invoice_2, unit_price: 100, quantity: 100)
+    create(:invoice_item, invoice: invoice_3, unit_price: 100, quantity: 2000)
 
     get '/api/v1/merchants/most_revenue?quantity=1'
 
     expect(response).to be_successful
+    merchants = JSON.parse(response.body)
+    expect(merchants.first["id"]).to eq(merchant_2.id)
+    expect(merchants.first["name"]).to eq(merchant_2.name)
   end
 end

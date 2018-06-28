@@ -28,6 +28,14 @@ end
     )
   end
 
+  10.times do
+    Transaction.create!(
+      credit_card_number: rand(1..1000),
+      invoice_id: rand(1..10),
+      result: "success"
+    )
+  end
+
   100.times do
     InvoiceItem.create!(
       item_id: rand(1..10),

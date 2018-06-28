@@ -22,7 +22,7 @@ describe 'transactions API' do
     expect(transaction["id"]).to eq(id)
   end
 
-  xit 'can create a new transaction' do
+  it 'can create a new transaction' do
     id = create(:invoice).id
     transaction_params = { invoice_id: id, credit_card_number: "86753098672206" }
 
