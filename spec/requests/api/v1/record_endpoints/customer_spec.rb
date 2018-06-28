@@ -85,6 +85,18 @@ describe 'customers API' do
     expect(customers.first["first_name"]).to eq(first_name)
     expect(customers.count).to eq(2)
   end
+  it 'can search by first_name and is case insensitive' do
+    customer_1 = create(:customer, first_name: 'jamison')
+    customer_2 = create(:customer, first_name: 'sabrina')
+
+    get "/api/v1/customers/find?first_name=#{customer_1.first_name.upcase}"
+
+    customer = JSON.parse(response.body)
+    
+    expect(response).to be_successful
+  
+    expect(customer["id"]).to eq(customer_1.id)
+  end 
 
   it 'can search by last_name' do
     last_name = create_list(:customer, 15).first.last_name
@@ -98,6 +110,18 @@ describe 'customers API' do
     expect(customers.count).to eq(15)
   end
 
+  it 'can search by last_name and is case insensitive' do
+    customer_1 = create(:customer, last_name: 'smith')
+    customer_2 = create(:customer, last_name: 'jones')
+
+    get "/api/v1/customers/find?last_name=#{customer_1.last_name.upcase}"
+
+    customer = JSON.parse(response.body)
+    
+    expect(response).to be_successful
+  
+    expect(customer["id"]).to eq(customer_1.id)
+  end 
   it 'can search a random customer' do
     customers = create_list(:customer, 5)
 

@@ -1,36 +1,34 @@
-describe 'items API' do
-    describe 'relationships' do
-      xit "can return all items associated with a item" do
-        create(:item)
-        id = Item.last.id
-        id_2 = 2
-  
-        create(:item, id: id_2)
-        create_list(:item, 5, item_id: id)
-        create_list(:item, 9, item_id: id_2)
-        
-        get "/api/v1/items/#{id}/items"
-  
-        items = JSON.parse(response.body)
-        
-        expect(response).to be_successful
-        expect(items.count).to eq(5)
-      end
-      xit "can return all invoices associated with a item" do
-        create(:item)
-        id = Item.last.id
-        id_2 = 2
-  
-        create(:item, id: id_2)
-        create_list(:invoice, 4, item_id: id)
-        create_list(:invoice, 8, item_id: id_2)
-  
-        
-        get "/api/v1/items/#{id}/invoices"
-        invoices = JSON.parse(response.body)
-  
-        expect(response).to be_successful
-        expect(invoices.count).to eq(4)
-        end 
-      end
+require 'rails_helper'
+
+describe "Items API" do
+  describe "relationships" do
+    it "can return merchant associated with an item" do
+     merchant_1 = create(:merchant)
+     merchant_2 = create(:merchant)
+     merchant_3 = create(:merchant)
+     item_1 = create(:item, merchant: merchant_1)
+     item_2 = create(:item, merchant: merchant_2)
+     item_3 = create(:item, merchant: merchant_3)
+
+     get "/api/v1/items/#{item_2.id}/merchant"
+
+     merchant = JSON.parse(response.body)
+
+     expect(response).to be_successful
+     expect(merchant["id"]).to eq(merchant_2.id)
     end 
+    it "can return invoice_items associated with an item" do
+      items = create_list(:item, 5)
+      15.times do
+        create(:invoice_item, item: items.sample)
+      end 
+
+      get "/api/v1/items/#{items[3].id}/invoice_items"
+
+      invoice_items = JSON.parse(response.body)
+
+      expect(response).to be_successful
+      expect(items[3].invoice_items.count).to eq(invoice_items.count)
+    end 
+  end 
+end 
