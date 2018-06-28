@@ -106,7 +106,7 @@ describe "Invoice Items Record" do
 
         invoice_items = JSON.parse(response.body)
 
-        expect(invoice_items.count).to eq(3)
+        expect(invoice_items.count).to eq(1)
     end 
     it "can find all invoice items by quantity" do
         create_list(:invoice_item, 3, quantity: 2)
