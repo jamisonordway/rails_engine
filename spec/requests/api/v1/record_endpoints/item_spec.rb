@@ -30,6 +30,17 @@ describe "Items Record Endpoints" do
 
         expect(item["name"]).to eq(name)
     end 
+
+    it "can find first instance by case insensitive name" do
+        created_item = create(:item)
+        name = created_item.name
+        id = created_item.id 
+
+        get "/api/v1/items/find?name=#{name.upcase}"
+
+        item = JSON.parse(response.body)
+        expect(item["id"]).to eq(id)
+    end 
     it "can find first instance by description" do
         description = create_list(:item, 3).first.description
         
@@ -74,6 +85,16 @@ describe "Items Record Endpoints" do
         
         expect(item["name"]).to eq(item.name)
         expect(items.count).to eq(3)
+    end 
+    it "can find all instances by case insensitive name" do
+        created_items = create_list(:item, 2)
+        name = created_items.first.name
+        id = created_items.first.id 
+        
+        get "/api/v1/items/find_all?name=#{name.upcase}"
+
+        items = JSON.parse(response.body)
+        expect(items.count).to eq(2)
     end 
     it "can get all items by matching description" do
         item = create_list(:item, 3).first
