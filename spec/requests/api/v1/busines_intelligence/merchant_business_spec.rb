@@ -15,7 +15,7 @@ describe 'merchant business analytics' do
     get "/api/v1/merchants/#{merchant.id}/revenue"
 
     expect(response).to be_success
-    # revenue = JSON.parse([response.body].to_json).first
+    # revenue = JSON.parse(response.body, symbolize_names: true)
     # expect(revenue).to eq(2000)
   end
   it 'should return merchant with most items' do
@@ -66,5 +66,25 @@ describe 'merchant business analytics' do
     merchants = JSON.parse(response.body)
     expect(merchants.first["id"]).to eq(merchant_2.id)
     expect(merchants.first["name"]).to eq(merchant_2.name)
+  end
+
+  it 'returns the total revenue for a date across all merchants' do
+    merchant = create(:merchant)
+    invoice_1 = create(:invoice, merchant: merchant)
+    invoice_2 = create(:invoice, merchant: merchant, created_at: "2017-06-30 10:45:00 UTC")
+    invoice_3 = create(:invoice, merchant: merchant)
+    create(:transaction, invoice: invoice_1, result: "Success")
+    create(:transaction, invoice: invoice_2, result: "Success")
+    create(:transaction, invoice: invoice_3, result: "Failed")
+    create(:invoice_item, invoice: invoice_1, unit_price: 100, quantity: 100)
+    create(:invoice_item, invoice: invoice_2, unit_price: 100, quantity: 100)
+    create(:invoice_item, invoice: invoice_3, unit_price: 1234, quantity: 1345)
+
+    get "/api/v1/merchants/#{merchant.id}/revenue?date=#{invoice_2.created_at}"
+
+    expect(response).to be_success
+
+    revenue = JSON.parse(response.body)
+    expect(revenue).to eq({"revenue"=>"10000.0"})
   end
 end
