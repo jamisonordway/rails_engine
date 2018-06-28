@@ -22,6 +22,6 @@ class Api::V1::InvoicesController < ApplicationController
     private
 
     def invoice_params
-        params.require(:invoice).permit(:customer_id, :merchant_id, :status)
+        params.require(:invoice).permit(:customer_id, :id, :merchant_id, :status)
     end
 end 
