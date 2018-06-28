@@ -12,6 +12,7 @@ describe "Invoices Record" do
     end 
     it "can get one invoice by its id" do
         id = create(:invoice).id
+        create_list(:invoice, 50)
 
         get "/api/v1/invoices/#{id}"
 
