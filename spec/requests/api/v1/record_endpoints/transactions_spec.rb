@@ -26,13 +26,12 @@ describe 'transactions API' do
   #   id = create(:invoice).id
   #   transaction_params = { invoice_id: id, credit_card_number: "86753098672206" }
 
-  #   post '/api/v1/transactions', params: {transaction: transaction_params}
-  #   transaction = Transaction.last
 
-  #   assert_response :success
-  #   expect(response).to be_successful
-  #   expect(transaction.credit_card_number).to eq(transaction_params[:credit_card_number])
-  # end
+  it 'can create a new transaction' do
+    id = create(:invoice).id
+    transaction_params = { invoice_id: id, credit_card_number: "86753098672206" }
+
+   end
 
   it 'can update an existing transaction' do
     id = create(:transaction).id
