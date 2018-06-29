@@ -6,20 +6,20 @@ class Item < ApplicationRecord
 
   default_scope { order('items.id DESC') }
 
-  # def best_day
-  #   binding.pry
-  #  invoices.joins(:invoice_items)
-  #   .order("invoice_items.quantity DESC, invoices.created_at DESC")
-  #   .first.created_at
 
+  def self.most_revenue(item)
+    joins(:invoices, :invoice_items).
+    order("sum(invoice_items.quantity * invoice_items.unit_price) DESC").
+    group("items.id").
+    limit(item)
+  end
 
-    # invoice_items
-    # .joins(invoice: :transactions)
-    # .merge(Transaction.unscoped.successful)
-    # .group(:created_at)
-    # .order('invoice_items.quantity desc')
-    # .first
-    # .invoice
-    # .created_at
-#   end
+  def self.most_items(item)
+    joins(invoice_items: [:invoice]).
+    merge(Invoice.successful).
+    group("items.id").
+    order('sum(invoice_items.quantity) DESC').
+    limit(item)
+  end
+
 end

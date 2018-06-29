@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         get '/random', to: 'random#show'
         get '/:id/merchant', to: 'merchant#show'
         get '/:id/invoice_items', to: 'invoice_items#show'
+        get '/most_revenue', to: 'most_revenue#show'
         get '/:id/best_day', to: 'best_day#show'
         get '/:id/most_items', to: 'most_items#show'
       end
@@ -36,6 +37,7 @@ Rails.application.routes.draw do
         get '/find_all', to: 'search#index'
         get '/random', to: 'random#show'
         get '/:id/items', to: 'items#index'
+        get '/:id/revenue', to: 'revenue#show'
         get '/:id/invoices', to: 'invoices#index'
         get '/most_items', to: 'most_items#show'
         get '/most_revenue', to: 'most_revenue#show'

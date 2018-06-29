@@ -7,13 +7,7 @@ class Merchant < ApplicationRecord
   has_many :transactions, through: :invoices
 
   def revenue
-    # get all invoice_items for merchant
-    InvoiceItem.joins(invoice: [:merchant])
-    # use those to get revenue
-  end
 
-  def num_items
-    Item.where(merchant_id: id).count
   end
 
   def self.most_items(quantity)
@@ -32,6 +26,27 @@ class Merchant < ApplicationRecord
     limit(quantity)
   end
 
+
+  def self.total_merchant_revenue(merchant_id)
+    select("merchants.*, sum(invoice_items.unit_price * invoice_items.quantity) AS revenue").
+    where(id: merchant_id).
+    joins(invoices: [:transactions, :invoice_items]).
+    merge(Transaction.successful).
+    group("merchants.id").
+    order("revenue DESC").
+    first
+  end
+
+  def self.date_total_merchant_revenue(merchant_id, date)
+    # invoices.created_today.map { |invoice| invoice.total_revenue  }.flatten.sum
+    select("merchants.*, sum(invoice_items.unit_price * invoice_items.quantity) AS revenue").
+    joins(invoices: [:transactions, :invoice_items]).
+    merge(Transaction.successful).
+    group("merchants.id").
+    order("revenue DESC").
+    first
+  end
+
   def favorite_customer
     customers
       .joins(:transactions)
@@ -41,4 +56,5 @@ class Merchant < ApplicationRecord
       .limit(1)
       .first
   end 
+
 end
