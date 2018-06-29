@@ -15,8 +15,8 @@ describe 'merchant business analytics' do
     get "/api/v1/merchants/#{merchant.id}/revenue"
 
     expect(response).to be_success
-    # revenue = JSON.parse(response.body, symbolize_names: true)
-    # expect(revenue).to eq(2000)
+    revenue = JSON.parse(response.body, symbolize_names: true)
+    expect(revenue).to eq(2000)
   end
   it 'should return merchant with most items' do
     merchant_1 = create(:merchant)
@@ -69,7 +69,7 @@ describe 'merchant business analytics' do
   end
 
   it 'returns the total revenue for a date across all merchants' do
-    merchant = create(:merchant)
+    merchant = create(:merchant, id: 1)
     invoice_1 = create(:invoice, merchant: merchant)
     invoice_2 = create(:invoice, merchant: merchant, created_at: "2017-06-30 10:45:00 UTC")
     invoice_3 = create(:invoice, merchant: merchant)
@@ -81,7 +81,6 @@ describe 'merchant business analytics' do
     create(:invoice_item, invoice: invoice_3, unit_price: 1234, quantity: 1345)
 
     get "/api/v1/merchants/#{merchant.id}/revenue?date=#{invoice_2.created_at}"
-
     expect(response).to be_success
 
     revenue = JSON.parse(response.body)

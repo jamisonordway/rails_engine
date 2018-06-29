@@ -27,13 +27,23 @@ class Merchant < ApplicationRecord
     limit(quantity)
   end
 
+  def self.total_merchant_revenue(merchant_id)
+    select("merchants.*, sum(invoice_items.unit_price * invoice_items.quantity) AS revenue").
+    where(id: merchant_id).
+    joins(invoices: [:transactions, :invoice_items]).
+    merge(Transaction.successful).
+    group("merchants.id").
+    order("revenue DESC").
+    first
+  end
+
   def self.date_total_merchant_revenue(merchant_id, date)
-    where(["merchants.id = ? and merchants.created_at = ?", merchant_id, date])
-    .select("merchants.*, sum(invoice_items.unit_price * invoice_items.quantity) AS revenue")
-    .joins(invoices: [:transactions, :invoice_items])
-    .merge(Transaction.successful)
-    .group(:id)
-    .order("revenue DESC")
-    .first
+    # invoices.created_today.map { |invoice| invoice.total_revenue  }.flatten.sum
+    select("merchants.*, sum(invoice_items.unit_price * invoice_items.quantity) AS revenue").
+    joins(invoices: [:transactions, :invoice_items]).
+    merge(Transaction.successful).
+    group("merchants.id").
+    order("revenue DESC").
+    first
   end
 end
