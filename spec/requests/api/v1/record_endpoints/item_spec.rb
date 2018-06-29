@@ -221,4 +221,26 @@ describe "Items Record Endpoints" do
         expect(Item.count).to eq(0)
         expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
     end 
+    it 'best day' do 
+        item_1 = create(:item)
+        invoice_list_1 = create_list(:invoice, 2, created_at: "2018-04-31 11:11:10 UTC")
+        invoice_list_2 = create_list(:invoice, 3, created_at: "2018-04-31 11:11:22 UTC")
+
+        create(:invoice_item, invoice: invoice_list_1[0], item_id: item_1.id)
+        create(:invoice_item, invoice: invoice_list_1[1], item_id: item_1.id)
+        create(:invoice_item, invoice: invoice_list_2[0], item_id: item_1.id)
+        create(:invoice_item, invoice: invoice_list_2[1], item_id: item_1.id)
+
+        create(:transaction, invoice: invoice_list_1[0], result: "success")
+        create(:transaction, invoice: invoice_list_1[1], result: "success")
+        create(:transaction, invoice: invoice_list_2[0], result: "success")
+        create(:transaction, invoice: invoice_list_2[1], result: "success")
+        create(:transaction, invoice: invoice_list_2[2], result: "failure")
+
+        get "/api/v1/items/#{item_1.id}/best_day"
+
+        day = JSON.parse(response.body)
+
+        expect(day).to eq("best_day"=>"2018-05-01T11:11:10.000Z")
+    end 
 end 

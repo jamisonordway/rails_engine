@@ -50,4 +50,21 @@ describe 'merchant business analytics' do
     expect(merchants.first["id"]).to eq(merchant_2.id)
     expect(merchants.first["name"]).to eq(merchant_2.name)
   end
+  it 'should return customer with most successful transactions for a merchant' do
+    merchant = create(:merchant, id: 1)
+    customer_1 = create(:customer, id: 1)
+    customer_2 = create(:customer, id: 2)
+
+    customer_1_invoice = customer_1.invoices.create(merchant_id: "#{merchant.id}", status: "paid")
+    customer_2_invoice = customer_2.invoices.create(merchant_id: "#{merchant.id}", status: "ordered")
+
+    create_list(:transaction, 5, invoice_id: "#{customer_1_invoice.id}", result: "failed")
+    create_list(:transaction, 7, invoice_id: "#{customer_2_invoice.id}", result: "success")
+
+    get "/api/v1/merchants/#{merchant.id}/favorite_customer"
+
+    favorite_customer = JSON.parse(response.body)
+
+    expect(favorite_customer["id"]).to eq(customer_2.id)
+  end
 end
