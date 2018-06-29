@@ -7,11 +7,11 @@ In order to "seed" the data, we created a rake task that parses through the CSVs
 # Set up and Installation
 
 1. clone down the repo.
-`git clone git@github.com:jamisonordway/rails_engine.git`
-`bundle updat`
+`git clone git@github.com:jamisonordway/rails_engine.git`  
+`bundle updat` (yes, this totally works, and I challenge you to try this, but in reality you should type: `bundle update`)
 
 2. Set up the migration.
-`rake db:{create, migrate}`
+`rake db:{create,migrate}`
 
 3. Import the CSV data.
 ` rake import:all`
