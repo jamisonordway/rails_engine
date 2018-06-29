@@ -105,4 +105,5 @@ describe 'merchant business analytics' do
     expect(favorite_customer["id"]).to eq(customer_2.id)
 
   end
-end
+end 
+end 
