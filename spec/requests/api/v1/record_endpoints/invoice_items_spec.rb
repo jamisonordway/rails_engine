@@ -84,7 +84,7 @@ describe "Invoice Items Record" do
         invoice_item = JSON.parse(response.body)
 
         expect(response).to be_successful
-        expect(invoice_item["unit_price"]).to eq(unit_price)
+        expect(invoice_item["unit_price"]).to eq((unit_price.to_f / 100).to_s)
     end 
     it "can find all invoice items by item id" do
         item_id = create_list(:invoice_item, 3).first.item_id
