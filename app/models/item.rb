@@ -6,6 +6,7 @@ class Item < ApplicationRecord
 
   default_scope { order('items.id DESC') }
 
+
   def self.most_revenue(item)
     joins(:invoices, :invoice_items).
     order("sum(invoice_items.quantity * invoice_items.unit_price) DESC").
@@ -20,4 +21,5 @@ class Item < ApplicationRecord
     order('sum(invoice_items.quantity) DESC').
     limit(item)
   end
+
 end
