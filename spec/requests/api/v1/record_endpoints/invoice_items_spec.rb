@@ -108,6 +108,7 @@ describe "Invoice Items Record" do
 
         expect(invoice_items.count).to eq(1)
     end 
+    
     it "can find all invoice items by quantity" do
         create_list(:invoice_item, 3, quantity: 2)
         quantity = InvoiceItem.last.quantity
@@ -121,6 +122,7 @@ describe "Invoice Items Record" do
         expect(invoice_items.first["quantity"]).to eq(quantity)
         expect(invoice_items.count).to eq(3)
     end 
+
     it "can find all invoice items by created_at" do
         create_list(:invoice_item, 3, created_at: "2018-04-31 12:12:12 UTC")
         created_at = InvoiceItem.last.created_at
@@ -132,6 +134,7 @@ describe "Invoice Items Record" do
         expect(response).to be_successful
         expect(invoice_items.count).to eq(3)
     end 
+
     it "can find all invoice items by updated_at" do
         create_list(:invoice_item, 3, updated_at: "2018-05-31 12:12:12 UTC")
         updated_at = InvoiceItem.last.updated_at
@@ -143,6 +146,7 @@ describe "Invoice Items Record" do
         expect(response).to be_successful
         expect(invoice_items.count).to eq(3)
     end 
+
     it "can find all invoice items by unit_price" do
         create_list(:invoice_item, 3, unit_price: 1000)
         unit_price = InvoiceItem.last.unit_price
@@ -154,6 +158,7 @@ describe "Invoice Items Record" do
         expect(response).to be_successful
         expect(invoice_items.count).to eq(3)
     end 
+
     it "can return a random invoice item" do
         invoice_items = create_list(:invoice_item, 5)
 
@@ -163,6 +168,7 @@ describe "Invoice Items Record" do
 
         expect(response).to be_successful
     end 
+
     it "can create a new invoice item" do
         id = create(:invoice_item).id
         invoice_item_params = { item_id: 1, invoice_id: 1, quantity: 1 }

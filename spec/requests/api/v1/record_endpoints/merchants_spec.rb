@@ -156,7 +156,7 @@ describe 'merchants API' do
       create(:merchant, id: id_2)
       create_list(:item, 5, merchant_id: id)
       create_list(:item, 9, merchant_id: id_2)
-      
+    
       get "/api/v1/merchants/#{id}/items"
 
       items = JSON.parse(response.body)
